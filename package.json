@@ -1,0 +1,40 @@
+{
+  "name": "back-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mika-bar/back-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mika-bar/back-app/issues"
+  },
+  "homepage": "https://github.com/mika-bar/back-app#readme",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.3.5",
+    "@types/mongoose": "^5.5.34",
+    "@types/validator": "^12.0.1",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.4.1",
+    "mongoose": "^5.8.2",
+    "validator": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "nodemon": "^2.0.2",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  }
+}
