@@ -1,18 +1,23 @@
-import mongoose from 'mongoose';
+import {Schema,Document,model} from 'mongoose';
 import validator from 'validator';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
 
-interface IUser{
+
+
+
+interface IUser extends Document{
     firstName:string;
-    lastaname:string;
-
-
+    lastName:string;
+    password:string;
+    tokens: [{}];
+    generateAuthToken():any;
 
 }
 
 
-const userSchema = new mongoose.Schema({
+
+const userSchema = new Schema({
     firstName: {
         type: String,
         required: true,
@@ -65,7 +70,7 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse')
+    const token = jwt.sign({ _id: user._id.toString() }, 'backendapp', { expiresIn: '1h' })
 
     user.tokens = user.tokens.concat({ token })
     await user.save()
@@ -73,21 +78,21 @@ userSchema.methods.generateAuthToken = async function () {
     return token
 }
 
-// userSchema.statics.findByCredentials = async (email, password) => {
-//     const user = await User.findOne({ email })
+userSchema.statics.findByCredentials = async (userName:string, password:string) => {
+    const user = await User.findOne({ userName })
 
-//     if (!user) {
-//         throw new Error('Unable to login')
-//     }
+    if (!user) {
+        throw new Error('Unable to login')
+    }
 
-//     const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = await bcrypt.compare(password, user.password)
 
-//     if (!isMatch) {
-//         throw new Error('Unable to login')
-//     }
+    if (!isMatch) {
+        throw new Error('Unable to login')
+    }
 
-//     return user
-// }
+    return user
+}
 
 // Hash the plain text password before saving
 // userSchema.pre('save', async function (next) {
@@ -101,6 +106,7 @@ userSchema.methods.generateAuthToken = async function () {
 // })
 
 
-export const User = mongoose.model('User', userSchema);
+const User = model<IUser>('User', userSchema);
+export { User } ; 
 
 // module.exports = User
