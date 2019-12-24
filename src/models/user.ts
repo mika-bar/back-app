@@ -9,9 +9,11 @@ import * as jwt from 'jsonwebtoken';
 interface IUser extends Document{
     firstName:string;
     lastName:string;
+    userName:string;
     password:string;
     tokens: [{}];
     generateAuthToken():any;
+    //findByCredentials():any;
 
 }
 
@@ -70,7 +72,7 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, 'backendapp', { expiresIn: '1h' })
+    const token = jwt.sign({ _id: user._id.toString() }, 'backendapp', { expiresIn: '1d' })
 
     user.tokens = user.tokens.concat({ token })
     await user.save()
@@ -79,13 +81,14 @@ userSchema.methods.generateAuthToken = async function () {
 }
 
 userSchema.statics.findByCredentials = async (userName:string, password:string) => {
-    const user = await User.findOne({ userName })
+    const user = await User.findOne({ userName, password})
 
     if (!user) {
         throw new Error('Unable to login')
     }
 
-    const isMatch = await bcrypt.compare(password, user.password)
+    // const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = (password===user.password)
 
     if (!isMatch) {
         throw new Error('Unable to login')

@@ -2,17 +2,13 @@ import * as jwt from 'jsonwebtoken';
 import { User } from '../models/user';
 
 
-const auth = async (req:any, res:any, next:any) => {
+const auth = async (req: any, res: any, next: any) => {
     try {
-        const token = req.header('Authorization').replace('Bearer', '')
+        const token = req.header('Authorization').replace('Bearer ', '')
         console.log(token)
-        const decoded= jwt.verify(token, 'backendapp')
-        console.log("gfdsssgds")
-
-        console.log((<any>decoded)._id)
+        const decoded = jwt.verify(token, 'backendapp')
         const user = await User.findOne({ _id: (<any>decoded)._id, 'tokens.token': token })
-        // const user = await User.findOne({'tokens.token': token })
-       
+        console.log(user)
 
         if (!user) {
             throw new Error()
@@ -21,13 +17,13 @@ const auth = async (req:any, res:any, next:any) => {
         req.user = user
         next()
 
-    } catch(e){
+    } catch (e) {
         // res.status(401).send({error: 'not authenticated!'})
-        res.status(401).send({error: e.message})
+        res.status(401).send({ error: e.message })
     }
-  
+
 
 }
 
-export { auth } ; 
+export { auth };
 

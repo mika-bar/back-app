@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userSchema = new mongoose_1.Schema({
     firstName: {
@@ -51,17 +50,18 @@ userSchema.methods.toJSON = function () {
 };
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({ _id: user._id.toString() }, 'backendapp', { expiresIn: '1h' });
+    const token = jwt.sign({ _id: user._id.toString() }, 'backendapp', { expiresIn: '1d' });
     user.tokens = user.tokens.concat({ token });
     await user.save();
     return token;
 };
 userSchema.statics.findByCredentials = async (userName, password) => {
-    const user = await User.findOne({ userName });
+    const user = await User.findOne({ userName, password });
     if (!user) {
         throw new Error('Unable to login');
     }
-    const isMatch = await bcrypt.compare(password, user.password);
+    // const isMatch = await bcrypt.compare(password, user.password)
+    const isMatch = (password === user.password);
     if (!isMatch) {
         throw new Error('Unable to login');
     }
