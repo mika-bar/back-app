@@ -4,8 +4,6 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
 
-
-
 interface IUser extends Document{
     firstName:string;
     lastName:string;
@@ -13,11 +11,8 @@ interface IUser extends Document{
     password:string;
     tokens: [{}];
     generateAuthToken():any;
-    //findByCredentials():any;
 
 }
-
-
 
 const userSchema = new Schema({
     firstName: {
@@ -58,7 +53,6 @@ const userSchema = new Schema({
 }, {
     timestamps: true
 })
-
 
 userSchema.methods.toJSON = function () {
     const user = this
@@ -108,8 +102,6 @@ userSchema.statics.findByCredentials = async (userName:string, password:string) 
 //     next()
 // })
 
-
 const User = model<IUser>('User', userSchema);
 export { User } ; 
 
-// module.exports = User

@@ -1,6 +1,8 @@
  import * as express from 'express';
 import './db/mongoose';
-import {userRouter} from './routers/user';
+import { userRouter } from './routers/user';
+import { githubSearchRouter } from './routers/githubSearch';
+import { favouriteRouter } from './routers/favourite';
 import * as cors from 'cors';
 
 const app = express();
@@ -15,6 +17,8 @@ app.use(function (req: express.Request, res: express.Response, next: express.Nex
 });
 
 app.use(userRouter)
+app.use(githubSearchRouter)
+app.use(favouriteRouter)
 
 app.listen(port, err => {
   if (err) {

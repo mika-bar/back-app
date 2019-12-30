@@ -566,3 +566,7 @@ p.deprecated span{
   }
 
 } /* /@media print */
+
+.container-fluid{
+  margin-left: 0px;
+}

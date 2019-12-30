@@ -50,7 +50,7 @@ router.delete('/users/me', auth_1.auth, async (req, res) => {
 router.post('/users/login', async (req, res) => {
     try {
         const user = await user_1.User.schema.statics.findByCredentials(req.body.userName, req.body.password);
-        console.log(user);
+        //console.log(user)
         const token = await user.generateAuthToken();
         console.log(token);
         res.status(200).send({ user, token });

@@ -60,7 +60,7 @@ router.delete('/users/me', auth, async (req: any, res) => {
 router.post('/users/login', async (req, res) => {
     try {
         const user = await User.schema.statics.findByCredentials(req.body.userName, req.body.password)
-        console.log(user)
+        //console.log(user)
         const token = await user.generateAuthToken()
         console.log(token)
         res.status(200).send({ user, token })
