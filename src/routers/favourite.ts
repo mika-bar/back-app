@@ -7,7 +7,7 @@ const router = express.Router();
 
 //save user's favourite pokemon
 router.post('/favourites', auth, async(req:any, res) => {
-    const favourite = new Favourite ({pokemonName: req.body.pokemonName, userId: req.user._id});
+    const favourite = new Favourite ({pokemonName: req.body.name, userId: req.user._id});
     try{
         await favourite.save();
         res.status(200).send(favourite);
@@ -31,7 +31,7 @@ router.get('/favourites', auth, async (req:any, res)=>{
 //get user's specific favourite
 router.get('/favourites/search' ,auth, async (req, res) => {
     try{
-        console.log("name:", req.query.name)
+        // console.log("name:", req.query.name)
         const favourite = await Favourite.findOne({ pokemonName: req.query.name });
         
         if(!favourite){
@@ -48,13 +48,14 @@ router.get('/favourites/search' ,auth, async (req, res) => {
 // delete one of the user's favourites
 router.delete('/favourites', auth, async (req:any,res)=>{
     try{
-        const favourite = await Favourite.findOne({pokemonName:req.Query.params.name});
+        const favourite = await Favourite.findOne({pokemonName:req.query.name});
         await favourite.remove();
         res.send(favourite);
     } catch(e){
         res.status(500).send();
     }
 })
+
 
 export { router as favouriteRouter };
 

@@ -1,6 +1,8 @@
 import {Schema,Document,model} from 'mongoose';
 
 interface IFavourite extends Document {
+    pokemonName:string;
+    userId:string;
 
 }
 
